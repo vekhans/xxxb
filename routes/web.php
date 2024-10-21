@@ -1,6 +1,5 @@
 <?php
-
-use Illuminate\Support\Facades\Route; 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\TahunController;
 use App\Http\Controllers\Admin\PeriodeController;
@@ -33,10 +32,10 @@ use App\Http\Controllers\Admin\NilaiController;
 Route::get('/', function () {
     return view('welcome');
 });
- 
+
 Route::get('/rank', [App\Http\Controllers\Depan\DepanController::class,'index'])->name('rank');
-Route::get('/rank/{periodes}/show/{hitung}', [App\Http\Controllers\Depan\DepanController::class,'show'])->name('showrank'); 
-Route::get('/rank/{periodes}/rekapanedp', [App\Http\Controllers\Depan\DepanController::class,'rekapandep'])->name('rekapanz'); 
+Route::get('/rank/{periodes}/show/{hitung}', [App\Http\Controllers\Depan\DepanController::class,'show'])->name('showrank');
+Route::get('/rank/{periodes}/rekapanedp', [App\Http\Controllers\Depan\DepanController::class,'rekapandep'])->name('rekapanz');
 
 Auth::routes();
 
@@ -44,13 +43,13 @@ Route::get('admin',[App\Http\Controllers\Midel\RasaAdminController::class, 'inde
 Route::get('pimpinan', [App\Http\Controllers\Midel\RasaPimpinanController::class, 'index'])->name('rasapimpinan')->middleware('rasapimpinan');
 Route::get('tamu', [App\Http\Controllers\Midel\RasaTamuController::class, 'index'])->name('rasatamu')->middleware('rasatamu');
 
-Route::group(['prefix' => 'admin','namespace','middleware' => 'auth', 'rasaadmin'],function(){ 
-	Route::resource('/admin', AdminController::class); 
+Route::group(['prefix' => 'admin','namespace','middleware' => 'auth', 'rasaadmin'],function(){
+	Route::resource('/admin', AdminController::class);
 	Route::resource('periode', PeriodeController::class);
 	Route::resource('periode/{periodes}/devisi', DevisiController::class);
 	Route::resource('periode/{periodes}/devisi/{devisis}/kriteria', KriteriaController::class);
 	Route::resource('periode/{periodes}/devisi/{devisis}/kriterianb', KriterianbController::class);
-	Route::resource('periode/{periodes}/alternatif', AlternatifController::class); 
+	Route::resource('periode/{periodes}/alternatif', AlternatifController::class);
 	Route::get('periode/{periodes}/perhitungan', [HitungController::class, 'index'])->name('perhitungan.index');
 	Route::get('periode/{periodes}/perhitungan/{perhitungan}/show', [HitungController::class, 'show'])->name('perhitungan.show');
 	Route::get('periode/{periodes}/perhitungan/rekapan', [HitungController::class, 'rekapansx'])->name('rekapankk');
@@ -60,9 +59,9 @@ Route::group(['prefix' => 'admin','namespace','middleware' => 'auth', 'rasaadmin
 
 Route::group(['prefix' => 'pimpinan','namespace','middleware' => 'auth', 'rasapimpinan'],function(){
 	Route::resource('periodes/{periodes}/alternatifnbp', AlternatifnbpController::class);
-	Route::resource('/admins', AdminpController::class); 
+	Route::resource('/admins', AdminpController::class);
 	Route::resource('periodes', PeriodepController::class);
-	Route::resource('periodes/{periodes}/devisis', DevisisController::class);	 
+	Route::resource('periodes/{periodes}/devisis', DevisisController::class);
 	Route::get('periodes/{periodes}/perhitungans', [HitungpController::class, 'index'])->name('perhitungans.index');
 	Route::get('periodes/{periodes}/perhitungans/{perhitungan}/show', [HitungpController::class, 'show'])->name('perhitungans.show');
 	Route::get('periodes/{periodes}/perhitungans/rekapans', [HitungpController::class, 'rekapan'])->name('rekapans');

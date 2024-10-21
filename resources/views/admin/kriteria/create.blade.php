@@ -6,7 +6,7 @@
         <br>
         <table>
             <tr>
-                <td>                    
+                <td>
                     <strong>Periode </strong>
                 </td>
                 <td>
@@ -17,7 +17,7 @@
                 </td>
             </tr>
             <tr>
-                <td>                    
+                <td>
                     <strong>Divisi </strong>
                 </td>
                 <td>
@@ -40,16 +40,16 @@
             <div class="card-header">
                 <div class="form-group">
                     <div class="form-row">
-                        <div class="col-md-9" style="text-align: left;"> 
+                        <div class="col-md-9" style="text-align: left;">
                             <a href="{{route('rasaadmin')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Dashboard</a>
-                            <a href="{{route('periode.index')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Periode</a> 
+                            <a href="{{route('periode.index')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Periode</a>
                             <a href="{{route('devisi.index',[$periodes])}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Divisi</a>
-                            <a href="{{ route('kriteria.index',[$periodes, $devisis, 'id'=>null]) }}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Kriteria</a>                             
+                            <a href="{{ route('kriteria.index',[$periodes, $devisis, 'id'=>null]) }}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Kriteria</a>
                             <i class="fa fa-table"></i> Tambah Data Kriteria
 
-                        </div> 
-                        <div class="col-md-3" style="text-align: right;"> 
-                            <a href="{{ route('kriteria.index',[$periodes, $devisis]) }}" class="btn btn-sm btn-secondary"><i class="fa fa-fw fa-arrow-left"></i> Kembali</a> 
+                        </div>
+                        <div class="col-md-3" style="text-align: right;">
+                            <a href="{{ route('kriteria.index',[$periodes, $devisis]) }}" class="btn btn-sm btn-secondary"><i class="fa fa-fw fa-arrow-left"></i> Kembali</a>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                <div class="x_content">
                     <br />
                     <form  method="post" action="{{ route('kriteria.store',[$periodes, $devisis]) }}" data-parsley-validate class="form-horizontal form-label-left" enctype="multipart/form-data" name="formPendaftaran" onsubmit="return validateForm()">
-                        {{ csrf_field() }} 
+                        {{ csrf_field() }}
                         <div class="row col-md-12">
                             <div class="col-md-12">
                                 <div class="divs form-group{{ $errors->has('kode') ? ' has-error' : '' }}">
@@ -67,9 +67,9 @@
                                     <input type="text=" value="" id="kode" name="kode" class="masuk" placeholder="Kode Kriteria" required>
                                     @if ($errors->has('kode'))
                                     <span class="help-block">{{ $errors->first('kode') }}</span>
-                                    @endif                 
+                                    @endif
                                 </div>
-                            </div> 
+                            </div>
                             <div class="col-md-12">
                                 <div class="divs form-group{{ $errors->has('nama') ? ' has-error' : '' }}">
                                     <label class="col-md-3" for="nama">Nama Kriteria  <span class="required">*</span>
@@ -77,11 +77,21 @@
                                     <input type="text=" value="" id="nama" name="nama" class="col-md-6" placeholder="Nama Kriteria" required>
                                     @if ($errors->has('nama'))
                                    <span class="help-block">{{ $errors->first('nama') }}</span>
-                                    @endif             
+                                    @endif
                                 </div>
-                            </div> 
+                            </div>
                             <div class="col-md-12">
-                                <div class="form-group{{ $errors->has('atribut') ? ' has-error' : '' }}"  > 
+                                <div class="divs form-group{{ $errors->has('satuan') ? ' has-error' : '' }}">
+                                    <label class="col-md-3" for="satuan">Satuan Kriteria  <span class="required">*</span>
+                                    </label>
+                                    <input type="text=" value="" id="satuan" name="satuan" class="col-md-6" placeholder="Satuan Kriteria" required>
+                                    @if ($errors->has('satuan'))
+                                   <span class="help-block">{{ $errors->first('satuan') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group{{ $errors->has('atribut') ? ' has-error' : '' }}"  >
                                     <label class="col-md-3" for="atribut">Atribut</label>
                                         <select class="col-md-5" name="atribut" id="atribut">
                                             @foreach($atribut as $k => $v)
@@ -93,16 +103,16 @@
                                                 <strong>{{ $errors->first('atribut') }}</strong>
                                             </span>
                                         @endif
-                                   
+
                                 </div>
-                            </div>  
+                            </div>
                         </div>
-                        <div class="row col-md-12"> 
+                        <div class="row col-md-12">
                         </div>
                         <div class="row col-md-12" style="justify-content: center;">
                             <div class="ln_solid"></div>
-                            <div class="form-group"> 
-                                <input type="hidden" name="_token" value="{{ Session::token() }}"> 
+                            <div class="form-group">
+                                <input type="hidden" name="_token" value="{{ Session::token() }}">
                                 <button type="submit" class="btn btn-sm btn-success"><i class="ri-add-line"></i>Simpan</button>
                                 <!-- <a href="{{ route('kriteria.index',[$periodes, $devisis]) }}">
                                     <button class="btn btn-sm btn-secondary"><i class="ri-arrow-left-fill"></i>Kembali</button>
@@ -114,5 +124,5 @@
             </div>
         </div>
     </div>
-</div>  
-@stop  
+</div>
+@stop

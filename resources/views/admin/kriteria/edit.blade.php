@@ -2,11 +2,11 @@
 @section('content')
 <div id="content-wrapper">
     <div class="container-fluid">
-        <h3>Ubah Data Kriteria</h3> 
+        <h3>Ubah Data Kriteria</h3>
         <br>
         <table>
             <tr>
-                <td>                    
+                <td>
                     <strong>Periode </strong>
                 </td>
                 <td>
@@ -17,7 +17,7 @@
                 </td>
             </tr>
             <tr>
-                <td>                    
+                <td>
                     <strong>Divisi </strong>
                 </td>
                 <td>
@@ -27,7 +27,7 @@
                     <strong> {{ $devisis->nama}} </strong>
                 </td>
             </tr>
-        </table> 
+        </table>
         <hr/>
         @if(session('status'))
         <div class="alert alert-info alert-dismissible fade in" role="alert">
@@ -40,16 +40,16 @@
             <div class="card-header">
                 <div class="form-group">
                     <div class="form-row">
-                        <div class="col-md-9" style="text-align: left;"> 
+                        <div class="col-md-9" style="text-align: left;">
                             <a href="{{route('rasaadmin')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Dashboard</a>
                             <a href="{{route('periode.index')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Periode</a>
                             <a href="{{route('devisi.index',[$periodes])}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Divisi</a>
                             <a href="{{ route('kriteria.index',[$periodes, $devisis]) }}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Kriteria</a>
                             <i class="fa fa-table"></i> Ubah Data Kriteria
 
-                        </div> 
-                        <div class="col-md-3" style="text-align: right;"> 
-                            <a href="{{ route('kriteria.index',[$periodes->id, $devisis->id]) }}" class="btn btn-sm btn-secondary"><i class="fa fa-fw fa-arrow-left"></i> Kembali</a> 
+                        </div>
+                        <div class="col-md-3" style="text-align: right;">
+                            <a href="{{ route('kriteria.index',[$periodes->id, $devisis->id]) }}" class="btn btn-sm btn-secondary"><i class="fa fa-fw fa-arrow-left"></i> Kembali</a>
                         </div>
                     </div>
                 </div>
@@ -79,6 +79,16 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="form-group{{ $errors->has('satuan') ? ' has-error' : '' }}">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="satuan">Satuan Kriteria<span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" value="{{$kriterias->satuan}}" id="satuan" name="satuan" class="form-control col-md-7 col-xs-12">
+                                @if ($errors->has('satuan'))
+                                <span class="help-block">{{ $errors->first('satuan') }}</span>
+                                @endif
+                            </div>
+                        </div>
                         <div class="col-md-5 form-group{{ $errors->has('atribut') ? ' has-error' : '' }}"  >
                             <label for="atribut" class="control-label">Atribut</label>
                             <div>
@@ -93,22 +103,22 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>  
+                        </div>
                         <div class="ln_solid"></div>
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                 <input type="hidden" name="_token" value="{{ Session::token() }}">
                                 <input name="_method" type="hidden" value="PUT">
                                 <button type="submit" class="btn btn-sm btn-warning"> <i class="fa fa-plus"></i> Ubah</button>
-                                <a href="{{ route('kriteria.index',[$periodes->id, $devisis]) }}" class="btn btn-sm btn-secondary"><i class="fa fa-arrow-left"></i> Batal</a> 
+                                <a href="{{ route('kriteria.index',[$periodes->id, $devisis]) }}" class="btn btn-sm btn-secondary"><i class="fa fa-arrow-left"></i> Batal</a>
                             </div>
                         </div>
                     </form>
-                    
+
                 </div>
-                 
+
             </div>
         </div>
     </div>
-</div> 
+</div>
 @endsection

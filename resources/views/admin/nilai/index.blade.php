@@ -38,6 +38,18 @@
                     <strong> {{ $kriterias->nama}} </strong>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <strong>Satuan </strong>
+                </td>
+                <td>
+                    <strong> : </strong>
+                </td>
+
+                <td>
+                    <strong> {{ $kriterias->satuan}} </strong>
+                </td>
+            </tr>
         </table>
         <br>
 

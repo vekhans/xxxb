@@ -124,6 +124,7 @@ class KriteriaController extends Controller
             if (Auth::User()->id==1){
                 $this->validate($req, [
                     'nama' => 'required',
+                    'satuan' => 'required',
                     'kode' => 'required|max:20',
                     'atribut' => 'required',
                 ]);
@@ -148,6 +149,7 @@ class KriteriaController extends Controller
                 $kriteriastam->devisi = $devisis->id;
                 $kriteriastam->nama = $req->nama;
                 $kriteriastam->kode = $req->kode;
+                $kriteriastam->satuan = $req->satuan;
                 $kriteriastam->atribut = $req->atribut;
                 $kriteriastam->save();
                 $kriteria = Kriteria::WHERE('devisi','=',$devisis->id)->get();
@@ -241,6 +243,7 @@ class KriteriaController extends Controller
                 $this->validate($request, [
                     'nama' => 'required',
                     'atribut' => 'required',
+                    'satuan' => 'required',
                     'kode' => 'required|max:100',
                 ]);
                 $periodes = Periode::findOrFail($periodes);
@@ -250,6 +253,7 @@ class KriteriaController extends Controller
                 $nama = $kriterubahs->nama;
                 $kriterubahs->nama = $request->nama;
                 $kriterubahs->kode = $request->kode;
+                $kriterubahs->satuan = $request->satuan;
                 $kriterubahs->atribut = $request->atribut;
                 $kriterubahs->save();
                 $devpered = Devisi::where('periode','=',$periodes->id)->get();
