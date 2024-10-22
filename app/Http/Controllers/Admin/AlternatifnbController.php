@@ -76,8 +76,6 @@ class AlternatifnbController extends Controller
                         $datasp[$row->alternatif][$row->kriteria] = $row->nilai;
                     }
 
-
-
                     // menampilkan halaman slide yang lokasinya ada di profil/resource/view/admin/berita/index.blade.php
                     return view('pimpinan.alternatifnb.index',['title' => $title,
                         'datas' => $datas,
@@ -201,6 +199,7 @@ class AlternatifnbController extends Controller
 
             try
             {
+
                 foreach ($request->except('_token', '_method') as $key => $value) {
                     $ID = str_replace('ID-', '', $key);
 

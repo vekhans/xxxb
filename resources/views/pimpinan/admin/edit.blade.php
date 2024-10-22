@@ -8,18 +8,18 @@
             <div class="card-header">
                 <div class="form-group">
                     <div class="form-row">
-                        <div class="col-md-9" style="text-align: left;"> 
+                        <div class="col-md-9" style="text-align: left;">
                             <a href="{{route('rasaadmin')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Dashboard</a>
                             <!-- <a href="{{route('admin.index')}}" class="active"><i class="fa fa-fw fa-table"></i>Data Admin </a> -->
-                            <a><i class="fa fa-edit"></i> Ubah Data Admin :{!!' <strong>'.$admin->name.'</strong>'!!}</a> 
-                        </div> 
-                        <div  class="col-md-3" style="text-align: right;"> 
+                            <a><i class="fa fa-edit"></i> Ubah Data Admin :{!!' <strong>'.$admin->name.'</strong>'!!}</a>
+                        </div>
+                        <div  class="col-md-3" style="text-align: right;">
                             <a href="
                                 <?php if (Auth::user()->kategori === 'Pimpinan'): ?>
                                     {{ route('admins.show',Auth::user()->id)}}
                                 <?php endif ?>
                                 " class="btn btn-sm btn-info"><i class="fa fa-arrow-left"></i> Kembali
-                            </a> 
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-md-5 form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                        <div class="col-md-5 form-group{{ $errors->has('lengkap') ? ' has-error' : '' }}">
                             <label class="control-label" for="name">Nama Lengkap User <span class="required">*</span>
                             </label>
                             <div>
@@ -58,7 +58,7 @@
                                 @endif
                             </div>
                         </div>
-                        
+
                         <div class="col-md-5 form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label class="control-label" for="email">Email User <span class="required">*</span>
                             </label>
@@ -109,7 +109,7 @@
                                 <span class="help-block">{{ $errors->first('alamat') }}</span>
                                 @endif
                             </div>
-                        </div>                  
+                        </div>
                         <div class="col-md-6 form-group{{ $errors->has('file') ? ' has-error' : '' }}">
                             <label for="file" class="col-md-6 control-label">File / Foto</label>
                             <div>
@@ -122,12 +122,12 @@
                                 @endif
                             </div>
                         </div>
-                      
+
                         <div class="col-md-3 col-md-offset-3 form-group">
                             <div>
                                 <img id="img-preview" class="img-responsive" src="{{asset($admin->file)}}" style="border-radius: 20%; height: 210px; width: 209px;"/>
                             </div>
-                        </div>                     
+                        </div>
 
                     </div>
                     <div class="ln_solid"></div>
@@ -142,7 +142,7 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 @section('script')
 <script type="text/javascript">
       $("#file").change(function() {
@@ -155,5 +155,5 @@
         }
       });
 </script>
-@endsection 
-@stop 
+@endsection
+@stop

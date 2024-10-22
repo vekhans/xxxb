@@ -54,11 +54,22 @@
 <?php
                                         foreach ($kriteriase as $cdfg => $cds) : ?>
                                             <?php if ($cds->id == $value->kriteria): ?>
-                                            <label class="col-md-5 form-control" for="nama">
+                                            <label class="col-md-5 form-control" for="ID-{{$value->id}}">
                                                <strong>Kriteria</strong> {{$cds->kode}} - {{$cds->nama}}
 
                                     </label>
-                                    <input class="form-control col-md-2" type="number" min="0" max="1000" name="ID-{{$value->id}}" value="{{$value->bobot}} " />
+                                    <input class="form-control col-md-2" type="number" id="ID-{{$value->id}}" min="0"  max="1000" name="ID-{{$value->id}}" value="{{$value->bobot}}" required/>
+                                    <?php
+                                    $dd = "ID-{$value->id}";
+
+
+                                    ?>
+                                    @if ($errors->has($dd))
+                                <span class="help-block">{{ $errors->first($dd) }}</span>
+                                @endif
+
+
+
                                     <label class="col-md-4 form-control" for="dd">
                                           {{$cds->satuan}}
 

@@ -73,7 +73,7 @@
 
                         </div>
                         <div class="col-md-3" style="text-align: right;">
-                            <a href="{{ route('nilai.create',[$periodes, $devisis, $kriterias]) }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Data Nilai Kriteria </a>
+                            {{-- <a href="{{ route('nilai.create',[$periodes, $devisis, $kriterias]) }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Data Nilai Kriteria </a> --}}
 
                         </div>
                     </div>
