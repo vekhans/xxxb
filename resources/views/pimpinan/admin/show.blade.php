@@ -2,7 +2,7 @@
 @section('content')
 <div id="content-wrapper">
     <div class="container-fluid">
-        <h3>Data Admin / Pengelola</h3>
+        <h3>Data Pimpinan / Pengelola</h3>
         <hr/>
         <div class="clearfix"></div>
         <div class="card mb-3">

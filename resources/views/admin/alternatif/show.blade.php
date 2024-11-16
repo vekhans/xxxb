@@ -2,7 +2,7 @@
 @section('content')
 <div id="content-wrapper">
     <div class="container-fluid">
-        <h3>Ubah Data Alternatif</h3>
+        <h3>Detail Data Alternatif</h3>
         <br>
         <table>
             <tr>
@@ -33,7 +33,7 @@
                             <a href="{{route('rasaadmin')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Dashboard</a>
                             <a href="{{route('periode.index')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Periode</a>
                             <a href="{{ route('alternatif.index',[$periodes]) }}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Alternatif</a>
-                            <i class="fa fa-table"></i> Ubah Data Alternatif
+                            <i class="fa fa-table"></i> Lihat Data Alternatif
 
                         </div>
                         <div class="col-md-3" style="text-align: right;">
@@ -47,14 +47,19 @@
                     <br />
                     <form method="POST" action="{{ route('alternatif.update',[$periodes, $alternatif]) }}" data-parsley-validate class="forms form-horizontal form-label-left" enctype="multipart/form-data">
                         {{ csrf_field() }}
+                        <div class="form-group{{ $errors->has('kode') ? ' has-error' : '' }}">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="kode">Kode Alternatif<span class="required"></span>
+                            </label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="kode">{{$alternatif->kode}}
+                            </label>
 
+                        </div>
                         <div class="form-group{{ $errors->has('nama') ? ' has-error' : '' }}">
                             <label class="control-label col-md-3 col-sm-3" for="nama">Nama Alternatif<span class="required">*</span>
                             </label>
-                                <input type="text" value="{{$alternatif->nama}}" id="nama" name="nama" class="form-control col-md-7">
-                                @if ($errors->has('nama'))
-                                <span class="help-block">{{ $errors->first('nama') }}</span>
-                                @endif
+                            <label class="control-label col-md-3 col-sm-3" for="nama">{{$alternatif->nama}}
+                            </label>
+
                         </div>
 
 
@@ -64,7 +69,7 @@
                                     <label class="control-label col-md-3 col-sm-3" for="devisi">Divisi <span class="required">*</span>
                                     </label>
 
-                                        <select class="selectpicker form-control col-md-7 col-xs-12" id="devisi" name="devisi[]" multiple data-live-search="true">
+                                        <select class="selectpicker form-control col-md-7 col-xs-12" id="devisi" name="devisi[]" multiple disabled>
                                              @foreach($devisis as $devisi)
                                             <option value="{{$devisi->id}}"
                                                 @foreach($alternatif->alrank as $item)
@@ -95,7 +100,6 @@
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                 <input type="hidden" name="_token" value="{{ Session::token() }}">
                                 <input name="_method" type="hidden" value="PUT">
-                                <button type="submit" class="btn btn-sm btn-warning"> <i class="fa fa-plus"></i> Ubah</button>
                                 <a href="{{ route('alternatif.index',[$periodes]) }}" class="btn btn-sm btn-secondary"><i class="fa fa-arrow-left"></i> Batal</a>
                             </div>
                         </div>

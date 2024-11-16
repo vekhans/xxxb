@@ -3,13 +3,13 @@
 <head lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>{{ $title}} | AHP TOPSIS - Dolphin</title> 
+  <title>{{ $title}} | AHP TOPSIS - Dolphin</title>
   <meta name="keywords" content="Dolphin" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Dolphin Dolphin">
   <meta name="author" content="Dolphin.co.id">
-  <meta name="csrf-token" content="{{ csrf_token() }}"> 
-  
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
   <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5/2/3/css/bootstrap.min.css"> -->
   <link rel="shortcut icon" href="{{asset('/assets/pngegg.png')}}" type="image/x-icon" />
   <link rel="apple-touch-icon" href="{{asset('/assets/pngegg.png')}}">
@@ -20,7 +20,7 @@
   <link href="{{asset('assets/startboot/css/sb-admin.css')}}" rel="stylesheet">
   <link href="{{asset('assets/pilihan/css/bootstrap-select.min.css')}}" rel="stylesheet">
   <style>
- 
+
 
 /* Style tab links */
 .tablink {
@@ -45,7 +45,7 @@
   padding: 100px 20px;
   height: 100%;
 }
- </style> 
+ </style>
 </head>
 <body id="page-top">
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
@@ -54,7 +54,7 @@
       <i class="fas fa-bars"></i>
     </button>
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-      @csrf  
+      @csrf
       <!-- <div class="input-group">
         <input type="text" class="form-control" placeholder="Cari..." aria-label="Search" aria-describedby="basic-addon2">
         <div class="input-group-append">
@@ -62,7 +62,7 @@
             <i class="fas fa-search"></i>
           </button>
         </div>
-      </div> --> 
+      </div> -->
     </form>
     <ul class="navbar-nav ml-auto ml-md-0">
       <li class="nav-item dropdown no-arrow">
@@ -104,6 +104,12 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="{{ route('devisim.index') }}">
+          <i class="fas fa-fw fa-user-circle"></i>
+          <span>DATA KRITERIA</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="{{ route('periode.index') }}">
           <i class="fas fa-fw fa-user-circle"></i>
           <span>DATA PERIODE</span>
@@ -134,12 +140,12 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Yakin ingin Keluar?</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Yakin Ingin Keluar?</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">Pilih "Keluar" Jika Anda Yakin Untuk akhiri session ini.. Terimakasi!!.</div>
+        <div class="modal-body">Pilih "Keluar" Jika Anda Yakin Ingin Mengakhiri Session Ini.. Terima Kasih!!</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
           <a class="btn btn-danger" href="{{ route('logout') }}" onclick="event.preventDefault();
@@ -159,7 +165,7 @@
   <script src="{{asset('assets/startboot/vendor/datatables/jquery.dataTables.js')}}"></script>
   <script src="{{asset('assets/startboot/vendor/datatables/dataTables.bootstrap4.js')}}"></script>
   <script src="{{asset('assets/startboot/js/sb-admin.min.js')}}"></script>
-  <script src="{{asset('assets/startboot/js/demo/datatables-demo.js')}}"></script> 
+  <script src="{{asset('assets/startboot/js/demo/datatables-demo.js')}}"></script>
   <script src="{{asset('assets/pilihan/js/bootstrap-select.min.js')}}"></script>
   @yield('script')
 </body>

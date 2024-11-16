@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Auth;
-use App\Models\User;  
+use App\Models\User;
 use App\Models\Periode;
 use App\Models\Devisi;
-use App\Models\Rank; 
-use App\Models\Kriteria; 
+use App\Models\Rank;
+use App\Models\Kriteria;
 use App\Models\Alternatif;
-use App\Models\Alternatifnb; 
+use App\Models\Alternatifnb;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 class AlternatifController extends Controller
 {
@@ -28,27 +29,27 @@ class AlternatifController extends Controller
                 // jika tidak ada maka akan dikembalikan ke halaman login
                 return redirect()->route('login')->with('warning','Data tidak valid!');
             }
-            // cek apakah id user = 1 
+            // cek apakah id user = 1
             //artinya hanya user dengan id = 1 saja yang bisa mengakses data profil
             if (Auth::User()->id==1){
-                //jika berhasi (user id =1)  
-                $title = 'Data Alternatif';  
+                //jika berhasi (user id =1)
+                $title = 'Data Alternatif';
                 $data = Alternatif::where('periode','=',$periodes)->get();
-                $periodes = Periode::findOrFail($periodes); 
-                  
+                $periodes = Periode::findOrFail($periodes);
+
                 $rankss=[];
                 foreach ($data as $rowakl ) {
                     $rankss[$rowakl->id] = array(
                         'alternatif' => $rowakl ->id,
                     );
-                } 
+                }
                 return view('admin.alternatif.index',['title' => $title, 'data' => $data, 'rankss' => $rankss, 'periodes'=>$periodes]);
             }
             else{
                 return redirect()->route('login')->with('warning','Data tidak valid!');
             }
         }
-        catch (ModelNotFoundException $ex) 
+        catch (ModelNotFoundException $ex)
         {
             if ($ex instanceof ModelNotFoundException)
             {
@@ -70,20 +71,20 @@ class AlternatifController extends Controller
                 // jika tidak ada maka akan dikembalikan ke halaman login
                 return redirect()->route('login')->with('warning','Data tidak valid!');
             }
-             // cek apakah id user = 1 
+             // cek apakah id user = 1
             //artinya hanya user dengan id = 1 saja yang bisa mengakses data devisi
             if (Auth::User()->id==1){
-                //jika berhasi (user id =1) 
-                $title = "Tambah Data Alternatif";   
-                $periodes = Periode::findOrFail($periodes);  
-                $devisi = Devisi::where('periode','=',$periodes->id)->get(); 
+                //jika berhasi (user id =1)
+                $title = "Tambah Data Alternatif";
+                $periodes = Periode::findOrFail($periodes);
+                $devisi = Devisi::where('periode','=',$periodes->id)->get();
                 return view('admin.alternatif.create',['title' => $title, 'periodes' => $periodes, 'devisi'=>$devisi]);
             }
             else{
                 return redirect()->route('login')->with('warning','Data tidak valid!');
             }
         }
-        catch (ModelNotFoundException $ex) 
+        catch (ModelNotFoundException $ex)
         {
             if ($ex instanceof ModelNotFoundException)
             {
@@ -108,44 +109,42 @@ class AlternatifController extends Controller
             if(!$periodes)
             {
                 return redirect()->route('periode.index');
-            }  
-            // cek apakah id user = 1 
+            }
+            // cek apakah id user = 1
             //artinya hanya user dengan id = 1 saja yang bisa mengakses data profil
             if (Auth::User()->id==1){
                 $this->validate($req, [
-                    'kode' => 'required|max:8',
-                    'nama' => 'required', 
+                    'namaal' => 'required',
                 ]);
                 $devisi      =$req->devisi;
-                // dd($devisi);
-                // die();
-                $carikode = Alternatif::where('periode','=',$periodes)->where('kode','=',$req->kode)->count();
-                if ($carikode > 0) { 
-                    return redirect()->back()->with('warning','Data Kode Sudah Dipakai Pada alternatif lain pada periode ini!');
-                }
-                $carinama = Alternatif::where('periode','=',$periodes)->where('nama','=',$req->nama)->count();
-                if ($carinama > 0) { 
+                $carinama = Alternatif::where('periode','=',$periodes)->where('nama','=',$req->namaal)->count();
+                if ($carinama > 0) {
                     return redirect()->back()->with('warning','Data Nama Sudah Dipakai Pada alternatif lain pada periode ini!');
                 }
+                if (!preg_match("/^[a-zA-Z ]*$/",$req->namaal)) {
+                    return redirect()->back()->with('warning','Data Nama Harus Berisi Huruf Saja!');
+                  }
                 $devisis = Devisi::where('periode','=',$periodes)->get();
-                $title = "Simpan Data Alternatif";  
+
                 $alternatifg = new Alternatif;
-                $alternatifg->kode = $req->kode;
-                $alternatifg->periode = $periodes; 
-                $alternatifg->nama = $req->nama; 
+                $alternatifg->kode = "A".$alternatifg->id;
+                $alternatifg->periode = $periodes;
+                $alternatifg->nama = $req->namaal;
                 $alternatifg->save();
 
-                $devisi      =$req->devisi;
+                $alternatifsew = Alternatif::findOrFail($alternatifg->id);
+                DB::TABLE('alternatifs')->where('id','=',$alternatifg->id)->UPDATE(['kode'=> "A".$alternatifg->id]);
+                 $alternatifsew->save();
 
                 $alternatifg->altrank()->sync($devisi);
                 foreach ($devisi as $keys => $values) {
-                    DB::TABLE('ranks')->where('alternatif','=',$alternatifg->id)->where('devisi','=',$values)->UPDATE(['periode'=> $periodes]);  
+                    DB::TABLE('ranks')->where('alternatif','=',$alternatifg->id)->where('devisi','=',$values)->UPDATE(['periode'=> $periodes]);
                 }
                 foreach ($devisi as $keys => $values) {
-                    $kriteria = Kriteria::all()->WHERE('devisi','=',$values); 
+                    $kriteria = Kriteria::all()->WHERE('devisi','=',$values);
                     foreach ($kriteria as $key) {
                         $kriteriass2 = new Alternatifnb;
-                        $kriteriass2->periode = $periodes;  
+                        $kriteriass2->periode = $periodes;
                         $kriteriass2->alternatif = $alternatifg->id;
                         $kriteriass2->kriteria   = $key->id;
                         $kriteriass2->nilai   = 0;
@@ -165,7 +164,7 @@ class AlternatifController extends Controller
                 return redirect()->route('login')->with('warning','Data tidak valid!');
             }
         }
-        catch (ModelNotFoundException $ex) 
+        catch (ModelNotFoundException $ex)
         {
             if ($ex instanceof ModelNotFoundException)
             {
@@ -177,59 +176,77 @@ class AlternatifController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */ 
-    public function edit($periodes, string $id)
+    public function show($periodes, string $id)
     {
         try
         {
-            $periodes = Periode::findOrFail($periodes);  
+            $periodes = Periode::findOrFail($periodes);
             $alternatif = Alternatif::findOrFail($id);
             $devisis = Devisi::where('periode','=',$periodes->id)->get();
             $params = [
                 'title' => 'Ubah Data Alternatif',
                 'periodes' => $periodes,
                 'devisis' => $devisis,
-                'alternatif' => $alternatif,  
+                'alternatif' => $alternatif,
             ];
-            return view('admin.alternatif.edit',[$periodes, $alternatif])->with($params);
+            return view('admin.alternatif.show',[$periodes, $alternatif])->with($params);
         }
-        catch (ModelNotFoundException $ex) 
+        catch (ModelNotFoundException $ex)
         {
             if ($ex instanceof ModelNotFoundException)
             {
                 return response()->view('errors.'.'404');
             }
-        } 
+        }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($periodes, string $id)
+    {
+        try
+        {
+            $periodes = Periode::findOrFail($periodes);
+            $alternatif = Alternatif::findOrFail($id);
+            $devisis = Devisi::where('periode','=',$periodes->id)->get();
+            $params = [
+                'title' => 'Ubah Data Alternatif',
+                'periodes' => $periodes,
+                'devisis' => $devisis,
+                'alternatif' => $alternatif,
+            ];
+            return view('admin.alternatif.edit',[$periodes, $alternatif])->with($params);
+        }
+        catch (ModelNotFoundException $ex)
+        {
+            if ($ex instanceof ModelNotFoundException)
+            {
+                return response()->view('errors.'.'404');
+            }
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $periodes, $id) 
+    public function update(Request $request, $periodes, $id)
     {
         if (Auth::User()->id== 1){
             try
             {
                 $this->validate($request, [
-                    'kode' => 'required|max:8',
-                    'nama' => 'required',  
-                ]);  
+                    'nama' => 'required',
+                ]);
                 $carikode1 = 1;
-                 
 
-                $alternatifse = Alternatif::findOrFail($id); 
+
+                $alternatifse = Alternatif::findOrFail($id);
                 $kode = $alternatifse->kode;
                 $nama = $alternatifse->nama;
 
-                $alternatifse->kode = $request->kode; 
-                $alternatifse->nama = $request->nama; 
+
+                $alternatifse->nama = $request->nama;
                 $alternatifse->save();
                 $cariko = Alternatif::all()->where('periode','=',$periodes)->where('kode','=',$request->kode)->count();
                 $carikode1 = 1;
@@ -243,7 +260,7 @@ class AlternatifController extends Controller
                     return redirect()->back()->with('warning','Data nama Sudah Dipakai Pada alternatif lain pada periode ini!');
                 }
 
-                
+
 
 
 
@@ -259,7 +276,7 @@ class AlternatifController extends Controller
                 $periodese->save();
                 return redirect()->route('alternatif.index',[$periodes])->with('success','Data Alternatif Berhasil di Ubah!');
              }
-            catch (ModelNotFoundException $ex) 
+            catch (ModelNotFoundException $ex)
             {
                 if ($ex instanceof ModelNotFoundException)
                 {
@@ -285,19 +302,19 @@ class AlternatifController extends Controller
                 $hapusan = Alternatifnb::where('alternatif','=',$id)->get();
                 foreach ($hapusan as $keyss => $valaue) {
                      $hcias = Alternatifnb::findOrFail($valaue->id);
-                     $hcias->delete(); 
+                     $hcias->delete();
                 }
                 $hapusrank = Rank::where('alternatif','=',$id)->where('periode','=',$periodes)->get();
                 foreach ($hapusrank as $keys => $valaues) {
                      $hranks = Rank::findOrFail($valaues->id);
-                     $hranks->delete(); 
+                     $hranks->delete();
                 }
 
                 $admin->delete();
                 $ubahststus = DB::TABLE('periodes')->where('id','=',$periodes)->UPDATE(['status'=> 'Tidak Konsisten']);
                 return redirect()->route('alternatif.index',[$periodes])->with('success', "Alternatif <strong>$admin->kode - $admin->nama</strong> Berhasil dihapus dari semua tabel.");
             }
-            catch (ModelNotFoundException $ex) 
+            catch (ModelNotFoundException $ex)
             {
                 if ($ex instanceof ModelNotFoundException)
                 {
@@ -305,7 +322,7 @@ class AlternatifController extends Controller
                 }
             }
         }
-        else{ 
+        else{
             $status = "Anda Tidak Punya Hak Akses";
             return redirect()->route('login')->with('danger', $status);
         }

@@ -23,21 +23,14 @@ class DepanController extends Controller
     {
         try
             {
-                // cek apakah user sudah login atau belum
-                 
-                // cek apakah id user = 1 
-                //artinya hanya user dengan id = 1 saja yang bisa mengakses data profil
-                    //jika berhasi (user id =1) 
-                    //maka akan membuat title dengan nama title = Data Profil'
+           
                     $title = 'Data Ranking'; 
                     $juk = Kriteria::where('periode','=', $periodes)->count();
-                    $jua = Alternatif::where('periode','=', $periodes)->count();     
-                    //mengambil semua data yang ada di dalam table user'
+                    $jua = Alternatif::where('periode','=', $periodes)->count();   
                     $data = Alternatif::where('periode','=', $periodes)->orderBy('rank')->get();
                     $periodes = Periode::findOrFail($periodes);
                     $pdf = Pdf::loadView('depan.hitung.show', ['periodes'=>$periodes,'title' => $title, 'juk' => $juk,'jua' => $jua, 'data' => $data]);
                     return $pdf->download('Data Ranking.pdf');
-                    // menampilkan halaman user yang lokasinya ada di profil/resource/view/admin/profil/index.blade.php  
                  
             }
         catch (ModelNotFoundException $ex) 
@@ -52,21 +45,14 @@ class DepanController extends Controller
     {
         try
         {
-            // cek apakah user sudah login atau belum
-             
-            // cek apakah id user = 1 
-            //artinya hanya user dengan id = 1 saja yang bisa mengakses data profil
-            
-                //jika berhasi (user id =1) 
-                //maka akan membuat title dengan nama title = Data Profil'
+           
                 $title = 'Rekapan Data Ranking';  
                 $jua = Alternatif::where('periode','=', $periodes)->count();     
-                //mengambil semua data yang ada di dalam table user'
                 $data = Alternatif::where('periode','=', $periodes)->withSum('alrank','total')->orderBy('alrank_sum_total','desc')->get();
                 $periodes = Periode::findOrFail($periodes); 
                 $pdf = Pdf::loadView('depan.hitung.edit', ['periodes'=>$periodes, 'title' => $title, 'jua' => $jua, 'data' => $data]);
                 return $pdf->download('Data Rekap Ranking.pdf');
-                // menampilkan halaman user yang lokasinya ada di profil/resource/view/admin/profil/index.blade.php  
+                  
              
         }
         catch (ModelNotFoundException $ex) 

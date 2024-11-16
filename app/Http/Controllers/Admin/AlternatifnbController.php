@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Auth;
 use App\Models\User;
 use App\Models\Periode;
 use App\Models\Devisi;
@@ -12,6 +11,8 @@ use App\Models\Kriteria;
 use App\Models\Kriterianb;
 use App\Models\Alternatif;
 use App\Models\Alternatifnb;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 class AlternatifnbController extends Controller

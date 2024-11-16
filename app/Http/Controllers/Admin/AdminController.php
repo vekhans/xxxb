@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Auth;
-use App\Models\User; 
+
+use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -23,21 +25,21 @@ class AdminController extends Controller
                 // jika tidak ada maka akan dikembalikan ke halaman login
                 return redirect()->route('login')->with('warning','Data tidak valid!');
             }
-            // cek apakah id user = 1 
+            // cek apakah id user = 1
             //artinya hanya user dengan id = 1 saja yang bisa mengakses data profil
             if (Auth::User()->kategori=== 'Admin'){
-                //jika berhasi (user id =1)  
-                $title = 'Data Admin';  
-                $data = User::all(); 
-                 
-                // menampilkan halaman slide yang lokasinya ada di profil/resource/view/admin/berita/index.blade.php 
+                //jika berhasi (user id =1)
+                $title = 'Data Admin';
+                $data = User::all();
+
+                // menampilkan halaman slide yang lokasinya ada di profil/resource/view/admin/berita/index.blade.php
                 return view('admin.admin.home',['title' => $title, 'data' => $data]);
             }
             else{
                 return redirect()->route('login')->with('warning','Data tidak valid!');
             }
         }
-        catch (ModelNotFoundException $ex) 
+        catch (ModelNotFoundException $ex)
         {
             if ($ex instanceof ModelNotFoundException)
             {
@@ -54,7 +56,7 @@ class AdminController extends Controller
         if (Auth::User()->kategori== "Admin"){
             $admin = User::all();
             $params = [
-                'title' => 'Tambah Data Admin', 
+                'title' => 'Tambah Data Admin',
                 'gender'  => (['Perempuan','Laki-laki']),
             ];
             return view('admin.admin.create')->with($params);
@@ -73,13 +75,13 @@ class AdminController extends Controller
             $this->validate($req, [
                 'name' => 'required|max:100|unique:users',
                 'email'    => 'required|email|unique:users,email|max:100',
-                'password' => 'required|min:5|confirmed', 
-                'file'   => 'file'.('|image|max:2048'), 
+                'password' => 'required|min:5|confirmed',
+                'file'   => 'file'.('|image|max:2048'),
                 'lengkap' => 'required|max:100|unique:users',
-                'alamat'   => 'required', 
+                'alamat'   => 'required',
                 'gender'  => 'required',
-                'telepon'   => 'required', 
-            ]);             
+                'telepon'   => 'required',
+            ]);
             $admin = new User;
             $admin->name = $req->name;
             $admin->email = $req->email;
@@ -100,7 +102,7 @@ class AdminController extends Controller
                     $extension  = $file->getClientOriginalExtension();
                     $fiker      = $filenamaa.$extension;
                     $path       = $req->file('file')->storeAs($dir,$fiker);
-                     
+
                     $admin->file      = $deir.$fiker;
                 }
             $admin->save();
@@ -124,8 +126,8 @@ class AdminController extends Controller
                 $params = [
                         'title' => 'Profil Admin',
                         'admin' => $admin,
-                    ]; 
-                     
+                    ];
+
                 if($admin->id <> (Auth::user()->id)){
                     return redirect()->route('rasaadmin')->with('warning','Data tidak valid!');
                 }
@@ -134,7 +136,7 @@ class AdminController extends Controller
                     return view('admin.admin.show')->with($params);
                 }
             }
-            catch (ModelNotFoundException $ex) 
+            catch (ModelNotFoundException $ex)
             {
                 if ($ex instanceof ModelNotFoundException)
                 {
@@ -164,7 +166,7 @@ class AdminController extends Controller
 
                 {return view('admin.admin.delete')->with($params);}
             }
-            catch (ModelNotFoundException $ex) 
+            catch (ModelNotFoundException $ex)
             {
                 if ($ex instanceof ModelNotFoundException)
                 {
@@ -198,7 +200,7 @@ class AdminController extends Controller
                 else
                 {return view('admin.admin.edit')->with($params);}
             }
-            catch (ModelNotFoundException $ex) 
+            catch (ModelNotFoundException $ex)
             {
                 if ($ex instanceof ModelNotFoundException)
                 {
@@ -214,8 +216,8 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id) 
-    {   
+    public function update(Request $request, string $id)
+    {
         if (Auth::User()->kategori== 'Admin'){
             try
             {
@@ -231,11 +233,11 @@ class AdminController extends Controller
                 if($admin->id <> (Auth::user()->id)){
                     return redirect()->route('rasaadmin')->with('warning','Data tidak valid!');
                 }
-                else                
+                else
                 {
                     if ($image = $request->hasFile('file')) {
                         $dir = '/media/admin/';
-                        
+
                         // Upload
                         $file       = $request->file('file');
                         $extension  = $file->getClientOriginalExtension();
@@ -256,7 +258,7 @@ class AdminController extends Controller
                     $admin->telepon = $request->telepon;
                     $admin->lengkap= $request->lengkap;
                     $admin->gender= $request->gender;
-                    $admin->save(); 
+                    $admin->save();
                     if ((Auth::user()->kategori) === 'Admin'){
                         return redirect()->route('admin.show',$id)->with('success', "User <strong>$admin->name</strong> sudah diubah.");
                     }
@@ -265,7 +267,7 @@ class AdminController extends Controller
                     }
                 }
             }
-            catch (ModelNotFoundException $ex) 
+            catch (ModelNotFoundException $ex)
             {
                 if ($ex instanceof ModelNotFoundException)
                 {
@@ -295,7 +297,7 @@ class AdminController extends Controller
                 $should_delete = true;
                 foreach($relationships as $r) {
                     if ($admin->$r->isNotEmpty()) {
-                        $should_delete = false; 
+                        $should_delete = false;
                         return redirect()->route('admin.index')->with('error', "User <strong>$admin->name</strong> tidak bisa dihapus karna sudah dipakai pada data lainnya.");
                     }
                 }
@@ -304,7 +306,7 @@ class AdminController extends Controller
                     return redirect()->route('admin.index')->with('success', "User <strong>$admin->name</strong> Berhasil dihapus");
                 }
             }
-            catch (ModelNotFoundException $ex) 
+            catch (ModelNotFoundException $ex)
             {
                 if ($ex instanceof ModelNotFoundException)
                 {

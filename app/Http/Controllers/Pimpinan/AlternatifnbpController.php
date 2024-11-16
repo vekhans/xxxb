@@ -223,9 +223,9 @@ class AlternatifnbpController extends Controller
                         if ($value >= $danilai->nilai1){
                             Alternatifnb::where('id', $ID)->where('periode', $periodes)->update(['nilai' => $danilai->bobot, 'status' => "Lama"]);
                         }
-                        if ($value <= 0){
-                            Alternatifnb::where('id', $ID)->where('periode', $periodes)->update(['nilai' => 0, 'status' => "Awal"]);
-                        }
+                        // if ($value <= 0){
+                        //     Alternatifnb::where('id', $ID)->where('periode', $periodes)->update(['nilai' => 0, 'status' => "Awal"]);
+                        // }
 
                     }
                     //         dd($dds);

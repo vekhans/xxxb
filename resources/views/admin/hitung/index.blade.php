@@ -30,9 +30,9 @@
             </div>
             <div class="card-body table-responsive">
                 <button class="tablink" onclick="openPage('Rekapan', this, '#269ecf')" id="defaultOpen">Rekapan</button>
-                <button style="float: left;"  class="tablink" onclick="openPage('cuci', this, '#8D94F2')">Devisi Cuci</button>
-                <button class="tablink" onclick="openPage('strika', this, '#064560')">Devisi Strika</button>
-                <button class="tablink" onclick="openPage('packing', this, '#20c59c')">Devisi Packing</button>
+                <button style="float: left;"  class="tablink" onclick="openPage('cuci', this, '#8D94F2')">Divisi Cuci</button>
+                <button class="tablink" onclick="openPage('strika', this, '#064560')">Divisi Strika</button>
+                <button class="tablink" onclick="openPage('packing', this, '#20c59c')">Divisi Packing</button>
                 <div id="cuci" class="tabcontent">
                     <div id="accordion">
                         <div class="card">

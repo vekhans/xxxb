@@ -30,9 +30,9 @@
             </div>
             <div class="card-body table-responsive">
                 <button class="tablink" onclick="openPage('Rekapan', this, '#269ecf')" id="defaultOpen">Rekapan</button>
-                <button style="float: left;"  class="tablink" onclick="openPage('cuci', this, '#8D94F2')">Devisi Cuci</button>
-                <button class="tablink" onclick="openPage('strika', this, '#064560')">Devisi Strika</button>
-                <button class="tablink" onclick="openPage('packing', this, '#20c59c')">Devisi Packing</button>
+                <button style="float: left;"  class="tablink" onclick="openPage('cuci', this, '#8D94F2')">Divisi Cuci</button>
+                <button class="tablink" onclick="openPage('strika', this, '#064560')">Divisi Strika</button>
+                <button class="tablink" onclick="openPage('packing', this, '#20c59c')">Divisi Packing</button>
                 <div id="cuci" class="tabcontent">
                     <div id="accordion">
                         <div class="card">
@@ -2134,15 +2134,15 @@
                                         <span><hr></span>
                                         <p>
                                             <?php if ($CR > 0.10): ?>
-                                            Status Penilaian Kriteria (AHP) Devisi Cuci : <span style="color: #CD3232; font-weight: 800;">Tidak Konsisten</span><?php endif ?>
+                                            Status Penilaian Kriteria (AHP) Divisi Cuci : <span style="color: #CD3232; font-weight: 800;">Tidak Konsisten</span><?php endif ?>
                                         </p>
                                         <p>
                                             <?php if ($CRstrika > 0.10): ?>
-                                            Status Penilaian Kriteria (AHP) Devisi Strika : <span style="color: #CD3232; font-weight: 800;">Tidak Konsisten</span><?php endif ?>
+                                            Status Penilaian Kriteria (AHP) Divisi Strika : <span style="color: #CD3232; font-weight: 800;">Tidak Konsisten</span><?php endif ?>
                                         </p>
                                         <p>
                                             <?php if ($CRpacking > 0.10): ?>
-                                            Status Penilaian Kriteria (AHP) Devisi Packing : <span style="color: #CD3232; font-weight: 800;">Tidak Konsisten</span><?php endif ?>
+                                            Status Penilaian Kriteria (AHP) Divisi Packing : <span style="color: #CD3232; font-weight: 800;">Tidak Konsisten</span><?php endif ?>
                                         </p>
                                     <?php else: ?>
                                         <span style="color: #1AAC06; font-weight: 800;">{{$statusperiode}}</span>
@@ -2210,7 +2210,7 @@
                             <h4 class="mb-0 text-center">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#clpd6" aria-expanded="true" aria-controls="clpd6">
                                     <h4>
-                                        Perankingan Devisi Cuci
+                                        Perankingan Divisi Cuci
 
                                     </h4>
                                     <p>
@@ -2288,7 +2288,7 @@
                             <h4 class="mb-0 text-center">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#clpd6" aria-expanded="true" aria-controls="clpd6">
                                     <h4>
-                                        Perankingan Devisi Strika
+                                        Perankingan Divisi Strika
                                     </h4>
                                     <p>
                                         Status Penilaian Kriteria (AHP) : 
@@ -2365,7 +2365,7 @@
                             <h4 class="mb-0 text-center">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#clpd6" aria-expanded="true" aria-controls="clpd6">
                                     <h4>
-                                        Perankingan Devisi Packing
+                                        Perankingan Divisi Packing
                                     </h4>
                                     <p>
                                         Status Penilaian Kriteria (AHP) : 

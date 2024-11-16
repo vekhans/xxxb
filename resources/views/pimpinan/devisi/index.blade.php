@@ -3,7 +3,7 @@
 
 <div id="content-wrapper">
     <div class="container-fluid">
-        <h3>Data Devisi</h3>
+        <h3>Data Divisi</h3>
         <br>
         <strong>Periode :{{$periodes->tahun}}-{{ $periodes->nama}}</strong>
         <hr/>
@@ -31,14 +31,14 @@
                     <thead class="thead-dark text-center">
                         <tr>                            
                             <th>No.</th> 
-                            <th>Devisi</th> 
+                            <th>Divisi</th> 
                             <th>Perhitungan</th>  
                         </tr>
                     </thead>
                     <tfoot class="thead-dark text-center">
                         <tr>                            
                             <th>No.</th> 
-                            <th>Devisi</th> 
+                            <th>Divisi</th> 
                             <th>Perhitungan</th>  
                         </tr>
                     </tfoot>

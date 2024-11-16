@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Auth;
-use App\Models\User;
 use App\Models\Periode;
 use App\Models\Devisi;
 use App\Models\Rank;
 use App\Models\Kriteria;
-use App\Models\Alternatif;
+use App\Models\Mkriteria;
 use App\Models\Alternatifnb;
 use App\Models\Kriterianb;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 class KriteriaController extends Controller
 {
@@ -80,10 +80,14 @@ class KriteriaController extends Controller
             if (Auth::User()->id==1){
                 //jika berhasi (user id =1)
                 $title = "Tambah data Kriteria";
-                $atribut  = (['Benefit','Cost']);
                 $periodes = Periode::findOrFail($periodes);
                 $devisis = Devisi::findOrFail($devisis);
-                return view('admin.kriteria.create',['title' => $title, 'periodes' => $periodes,'devisis' => $devisis, 'atribut' => $atribut]);
+                $mkriteria = Mkriteria::where('devisi','=',$devisis->nama)->get();
+
+                // dd($mkriteria);
+                // die();
+
+                return view('admin.kriteria.create',['title' => $title, 'periodes' => $periodes,'devisis' => $devisis, 'mkriteria' => $mkriteria]);
             }
             else{
                 return redirect()->route('login')->with('warning','Data tidak valid!');
@@ -101,11 +105,9 @@ class KriteriaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $req, $periodes, $devisis, $id = null)
-    {
+    public function store(Request $req, $periodes, $devisis, $id = null){
         try
         {
-            // cek apakah user sudah login atau belum
             if(!Auth::User())
             {
                 // jika tidak ada maka akan dikembalikan ke halaman login
@@ -123,64 +125,53 @@ class KriteriaController extends Controller
             //artinya hanya user dengan id = 1 saja yang bisa mengakses data profil
             if (Auth::User()->id==1){
                 $this->validate($req, [
-                    'nama' => 'required',
-                    'kode' => 'required|max:20',
-                    'atribut' => 'required',
+                    'mkriteria' => 'required',
                 ]);
                 $periodes = Periode::findOrFail($periodes);
                 $devisis = Devisi::findOrFail($devisis);
-
-                $devper = Devisi::where('periode','=',$periodes->id)->get();
-                foreach ($devper as $row => $val) {
-                    $carikode = Kriteria::where('devisi','=',$val->id)->where('kode','=',$req->kode)->count();
-                    if ($carikode > 0) {
-                    return redirect()->back()->with('warning','Data Kode Sudah Dipakai Pada Kriteria lain pada periode ini!');
-                    }
-                    //RANI YANG HAPUS
-                    // HAPUS INI KARNA PROGRAM MUNCUL WARNING!!
-                    // $carinam = Kriteria::where('devisi','=',$val->id)->where('nama','=',$req->nama)->count();
-                    // if ($carinam > 0) {
-                    // return redirect()->back()->with('warning','Data Nama Sudah Dipakai Pada Kriteria lain pada periode ini!');
-                    // }
-                }
                 $title = "Simpan Data Kriteria";
-                $kriteriastam = new Kriteria;
-                $kriteriastam->devisi = $devisis->id;
-                $kriteriastam->nama = $req->nama;
-                $kriteriastam->kode = $req->kode;
-                $kriteriastam->atribut = $req->atribut;
-                $kriteriastam->save();
-                $kriteria = Kriteria::WHERE('devisi','=',$devisis->id)->get();
-                foreach ($kriteria as $key) {
-                    $kriteriass2 = new Kriterianb;
-                    $kriteriass2->devisi = $devisis->id;
-                    $kriteriass2->id1 = $kriteriastam->id;
-                    $kriteriass2->id2 = $key->id;
-                    $kriteriass2->save();
-                }
-                foreach ($kriteria as $val) {
-                    if ($kriteriastam->id != $val->id) {
-                        $kriteriass2 = new Kriterianb;
-                        $kriteriass2->devisi = $devisis->id;
-                        $kriteriass2->id1 = $val->id;
-                        $kriteriass2->id2 = $kriteriastam->id;
-                        $kriteriass2->save();
+                foreach ($req->mkriteria as $key) {
+                    $mk = Mkriteria::findOrFail($key);
+                    $carikodem = Kriteria::where('mkriteria','=',$mk->id)->where('devisi','=',$devisis->id)->count();
+                    if ($carikodem == 0 ) {
+                        $kriteriastam = new Kriteria;
+                        $kriteriastam->devisi = $devisis->id;
+                        $kriteriastam->nama = $mk->nama;
+                        $kriteriastam->kode = $mk->kode;
+                        $kriteriastam->satuan = $mk->satuan;
+                        $kriteriastam->atribut = $mk->atribut;
+                        $kriteriastam->mkriteria = $mk->id;
+                        $kriteriastam->save();
+                        $kriteria = Kriteria::WHERE('devisi','=',$devisis->id)->get();
+                        foreach ($kriteria as $key) {
+                            $kriteriass2 = new Kriterianb;
+                            $kriteriass2->devisi = $devisis->id;
+                            $kriteriass2->id1 = $kriteriastam->id;
+                            $kriteriass2->id2 = $key->id;
+                            $kriteriass2->save();
+                        }
+                        foreach ($kriteria as $val) {
+                            if ($kriteriastam->id != $val->id) {
+                                $kriteriass2 = new Kriterianb;
+                                $kriteriass2->devisi = $devisis->id;
+                                $kriteriass2->id1 = $val->id;
+                                $kriteriass2->id2 = $kriteriastam->id;
+                                $kriteriass2->save();
+                            }
+                        }
+                        $relalternatif = Rank::WHERE('periode','=',$periodes->id)->WHERE('devisi','=',$devisis->id)->get();
+                        foreach ($relalternatif as $vaes) {
+                            $aaaa = new Alternatifnb;
+                            $aaaa->periode = $periodes->id;
+                            $aaaa->alternatif = $vaes->alternatif;
+                            $aaaa->kriteria = $kriteriastam->id;
+                            $aaaa->nilai = 0;
+                            $aaaa->save();
+                        }
                     }
-                }
-                $relalternatif = Rank::WHERE('periode','=',$periodes->id)->WHERE('devisi','=',$devisis->id)->get();
-                foreach ($relalternatif as $vaes) {
-                    $aaaa = new Alternatifnb;
-                    $aaaa->periode = $periodes->id;
-                    $aaaa->alternatif = $vaes->alternatif;
-                    $aaaa->kriteria = $kriteriastam->id;
-                    $aaaa->nilai = 0;
-                    $aaaa->save();
                 }
                 $status = "1 Data Kriteria baru telah diunggah.";
                 return redirect()->back()->with('success', $status);
-                // return redirect()->route('kriteria.index',[$periodes,$devisis])->with('success', $status);
-                // dd($kriteria->toArray());
-                // die;
             }
             else{
                 return redirect()->route('login')->with('warning','Data tidak valid!');
@@ -241,6 +232,7 @@ class KriteriaController extends Controller
                 $this->validate($request, [
                     'nama' => 'required',
                     'atribut' => 'required',
+                    'satuan' => 'required',
                     'kode' => 'required|max:100',
                 ]);
                 $periodes = Periode::findOrFail($periodes);
@@ -250,6 +242,7 @@ class KriteriaController extends Controller
                 $nama = $kriterubahs->nama;
                 $kriterubahs->nama = $request->nama;
                 $kriterubahs->kode = $request->kode;
+                $kriterubahs->satuan = $request->satuan;
                 $kriterubahs->atribut = $request->atribut;
                 $kriterubahs->save();
                 $devpered = Devisi::where('periode','=',$periodes->id)->get();

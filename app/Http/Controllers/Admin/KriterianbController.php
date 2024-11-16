@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Auth; 
-use App\Models\User; 
+
 use App\Models\Periode;
-use App\Models\Devisi; 
-use App\Models\Kriteria; 
-use App\Models\Kriterianb; 
+use App\Models\Devisi;
+use App\Models\Kriteria;
+use App\Models\Kriterianb;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 class KriterianbController extends Controller
 {
@@ -25,23 +26,23 @@ class KriterianbController extends Controller
                 // jika tidak ada maka akan dikembalikan ke halaman login
                 return redirect()->route('login')->with('warning','Data tidak valid!');
             }
-            // cek apakah id user = 1 
+            // cek apakah id user = 1
             //artinya hanya user dengan id = 1 saja yang bisa mengakses data profil
             if (Auth::User()->id==1){
-                //jika berhasi (user id =1)  
-                $title = 'Data Nilai Bobot Kriteria';   
+                //jika berhasi (user id =1)
+                $title = 'Data Nilai Bobot Kriteria';
                 $periodes = Periode::findOrFail($periodes);
                 $devisis = Devisi::findOrFail($devisis);
-                $id2s = Kriteria::where('devisi','=',$devisis->id)->orderBy('id','desc')->get(); 
+                $id2s = Kriteria::where('devisi','=',$devisis->id)->orderBy('id','desc')->get();
                 $rows = DB::table('kriterianbs as rk')->leftJoin('kriterias as k', 'k.id','=','rk.id1')->where('rk.devisi','=', $devisis->id)->where('rk.devisi','=',$devisis->id)->SELECT ('k.nama as nama', 'rk.id1 as id1', 'rk.id2 as id2', 'rk.nilai as nilai' )->ORDERBY('id1', 'asc')->ORDERBY('id2', 'asc')->get();
-                $datas = array();  
+                $datas = array();
                 foreach ($rows as $row) {
-                    $datas[$row->id1][$row->id2] = $row->nilai; 
-                } 
-                $datas = array(); 
+                    $datas[$row->id1][$row->id2] = $row->nilai;
+                }
+                $datas = array();
                 foreach ($rows as $row) {
-                    $datas[$row->id1][$row->id2] = round($row->nilai, 3); 
-                }             
+                    $datas[$row->id1][$row->id2] = round($row->nilai, 3);
+                }
                 $total = array();
                 foreach ($datas as $key => $value) {
                     foreach ($value as $k => $v) {
@@ -51,9 +52,9 @@ class KriterianbController extends Controller
                 $params = [
                     'title' => 'Ubah Data Nilai Bobot Kriteria',
                     'periodes' => $periodes,
-                    'devisis' => $devisis, 
+                    'devisis' => $devisis,
                     'rows' => $rows,
-                    'datas' => $datas,      
+                    'datas' => $datas,
                     'id2s'  => $id2s,
                     'nilai' => (['1' => '1. Sama penting dengan',
                         '2' => '2. Mendekati sedikit lebih penting dari',
@@ -64,16 +65,16 @@ class KriterianbController extends Controller
                         '7' => '7. Sangat penting dari',
                         '8' => '8. Mendekati mutlak dari',
                         '9' => '9. Mutlak sangat penting dari',]),
-                   'datas' =>$datas, 
+                   'datas' =>$datas,
                 ];
-                // menampilkan halaman slide yang lokasinya ada di profil/resource/view/admin/berita/index.blade.php 
+                // menampilkan halaman slide yang lokasinya ada di profil/resource/view/admin/berita/index.blade.php
                 return view('admin.kriterianb.index',['title' => $title,'periodes'=>$periodes,'devisis'=>$devisis])->with($params);
             }
             else{
                 return redirect()->route('login')->with('warning','Data tidak valid!');
             }
         }
-        catch (ModelNotFoundException $ex) 
+        catch (ModelNotFoundException $ex)
         {
             if ($ex instanceof ModelNotFoundException)
             {
@@ -109,7 +110,7 @@ class KriterianbController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($periodes, $devisis,string $key)
-    { 
+    {
         try
         {
           if(!Auth::User())
@@ -117,27 +118,27 @@ class KriterianbController extends Controller
                 // jika tidak ada maka akan dikembalikan ke halaman login
                 return redirect()->route('login')->with('warning','Data tidak valid!');
             }
-            // cek apakah id user = 1 
+            // cek apakah id user = 1
             //artinya hanya user dengan id = 1 saja yang bisa mengakses data profil
             if (Auth::User()->id==1){
-                //jika berhasi (user id =1)  
+                //jika berhasi (user id =1)
                 $periodes = Periode::findOrFail($periodes);
                 $devisis = Devisi::findOrFail($devisis);
                 $kriterianb = Kriterianb::where('id1','=',$key)->where('devisi','=',$devisis->id)->get();
 
                 $id2s = Kriteria::where('devisi','=',$devisis->id)->orderBy('id','asc')->get();
-                $rows = DB::table('kriterianbs as rk')->leftJoin('kriterias as k', 'k.id','=','rk.id1')->where ('rk.devisi','=', $devisis->id)->SELECT ('k.nama as nama', 'rk.id1 as id1', 'rk.id2 as id2', 'rk.nilai as nilai' )->ORDERBY('k.id', 'asc')->get(); 
-                $datas = array();  
+                $rows = DB::table('kriterianbs as rk')->leftJoin('kriterias as k', 'k.id','=','rk.id1')->where ('rk.devisi','=', $devisis->id)->SELECT ('k.nama as nama', 'rk.id1 as id1', 'rk.id2 as id2', 'rk.nilai as nilai' )->ORDERBY('k.id', 'asc')->get();
+                $datas = array();
                 foreach ($rows as $row) {
-                    $datas[$row->id1][$row->id2] = $row->nilai; 
-                } 
- 
+                    $datas[$row->id1][$row->id2] = $row->nilai;
+                }
+
                 $params = [
                     'title' => 'Ubah Data Penerima',
                     'periodes' => $periodes,
                     'devisis' => $devisis,
-                    'kriterianb' => $kriterianb, 
-                    'datas' => $datas,                  
+                    'kriterianb' => $kriterianb,
+                    'datas' => $datas,
                     'id1'  => $id2s,
                     'id2s'  => $id2s,
                     'nilai' => (['1' => '1. Sama penting dengan',
@@ -149,7 +150,7 @@ class KriterianbController extends Controller
                         '7' => '7. Sangat penting dari',
                         '8' => '8. Mendekati mutlak dari',
                         '9' => '9. Mutlak sangat penting dari',]),
-                   'key' =>$key, 
+                   'key' =>$key,
                 ];
                  return view('admin.kriterianb.edit',[$periodes, $devisis, $key])->with($params);
             }
@@ -157,7 +158,7 @@ class KriterianbController extends Controller
                 return redirect()->route('login')->with('warning','Data tidak valid!');
             }
         }
-        catch (ModelNotFoundException $ex) 
+        catch (ModelNotFoundException $ex)
         {
             if ($ex instanceof ModelNotFoundException)
             {
@@ -199,7 +200,7 @@ class KriterianbController extends Controller
                 }
                         if ($request->input('nilai') == '2. Mendekati sedikit lebih penting dari') {
                     $nilai3 = 2;
-                } 
+                }
                 if ($request->input('nilai') == '3. Sedikit lebih penting dari') {
                     $nilai3 = 3;
                 }
@@ -220,7 +221,7 @@ class KriterianbController extends Controller
                 }
                 if ($request->input('nilai') == '9. Mutlak sangat penting dari') {
                     $nilai3 = 9;
-                } 
+                }
                 $nilai2 = 1/$nilai3;
                 $kriterianbsss = Kriterianb::where('id1','=',$id11)->where('id2','=',$id12)->where('devisi','=',$devisis->id)->SELECT('kriterianbs.*')->get();
                 foreach ($kriterianbsss as $keys => $value) {
@@ -240,7 +241,7 @@ class KriterianbController extends Controller
                  $ubahststusp = DB::TABLE('periodes')->where('id','=',$periodes->id)->UPDATE(['status'=> 'Tidak Konsisten']);
                  return redirect()->route('kriterianb.index',[$periodes->id, $devisis->id])->with('info', "Data berhasil diubah.");
              }
-            catch (ModelNotFoundException $ex) 
+            catch (ModelNotFoundException $ex)
             {
                 if ($ex instanceof ModelNotFoundException)
                 {

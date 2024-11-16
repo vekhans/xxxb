@@ -102,7 +102,7 @@
           <?php endif ?>
           ">
           <i class="fas fa-fw fa-user-circle"></i>
-          <span>DATA ADMIN</span>
+          <span>DATA PIMPINAN</span>
         </a>
       </li>
       <li class="nav-item">
@@ -141,7 +141,7 @@
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">Pilih "Keluar" Jika Anda Yakin Untuk akhiri session ini.. Terimakasi!!.</div>
+        <div class="modal-body">Pilih "Keluar" Jika Anda Yakin Ingin Mengakhiri Session Ini.. Terima Kasih!!</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
           <a class="btn btn-danger" href="{{ route('logout') }}" onclick="event.preventDefault();

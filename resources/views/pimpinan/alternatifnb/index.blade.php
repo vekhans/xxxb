@@ -18,7 +18,7 @@
                 </tr>
                 <tr>
                     <td>                    
-                        <strong>Devisi </strong>
+                        <strong>Divisi </strong>
                     </td>
                     <td>
                         <strong> : </strong>
@@ -52,7 +52,7 @@
             </div>
             <div class="card-body table-responsive">
                 <div style="background-color: gray; padding: 5px  5px; text-align: center; margin-bottom: 5px;">
-                    <h4 style="color: white;"> Penilaian Devisi Cuci </h4>
+                    <h4 style="color: white;"> Penilaian Divisi Cuci </h4>
                 </div>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead class="thead-dark text-center">
@@ -128,7 +128,7 @@
 
                 <!-- strika  -->
                 <div style="background-color: gray; padding: 5px  5px; text-align: center; margin-bottom: 5px;">
-                    <h4 style="color: white;"> Penilaian Devisi Strika </h4>
+                    <h4 style="color: white;"> Penilaian Divisi Strika </h4>
                  </div>
 
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -205,7 +205,7 @@
 
                 <!-- packing mulai -->
                 <div style="background-color: gray; padding: 5px  5px; text-align: center; margin-bottom: 5px;">
-                    <h4 style="color: white;"> Penilaian Devisi Packing </h4>
+                    <h4 style="color: white;"> Penilaian Divisi Packing </h4>
                 </div>
 
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

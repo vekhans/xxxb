@@ -5,17 +5,7 @@
         <h3>Data Kriteria</h3>
         <br>
         <table>
-            <tr>
-                <td>
-                    <strong>Periode </strong>
-                </td>
-                <td>
-                    <strong> : </strong>
-                </td>
-                <td>
-                    <strong> {{ $periodes->tahun }} - {{ $periodes->nama }} </strong>
-                </td>
-            </tr>
+
             <tr>
                 <td>
                     <strong>Divisi </strong>
@@ -24,7 +14,7 @@
                     <strong> : </strong>
                 </td>
                 <td>
-                    <strong> {{ $devisis->nama}} </strong>
+                    <strong> {{ $devisis}} </strong>
                 </td>
             </tr>
         </table>
@@ -43,14 +33,12 @@
                     <div class="form-row">
                         <div class="col-md-9" style="text-align: left;">
                             <a href="{{route('rasaadmin')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Dashboard</a>
-                            <a href="{{route('periode.index')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Periode</a>
-                            <a href="{{route('devisi.index',[$periodes])}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Divisi</a>
-                            <i class="fa fa-fw fa-tachometer-alt"></i> Data Kriteria
+                             <a href="{{route('devisim.index')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Divisi</a>
+                            <i class="fa fa-fw fa-tachometer-alt"></i> Data Master Kriteria
 
                         </div>
                         <div class="col-md-3" style="text-align: right;">
-                            <a href="{{ route('kriteria.create',[$periodes, $devisis]) }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Data Kriteria </a>
-                            <a href="{{ route('kriterianb.index',[$periodes, $devisis]) }}" class="btn btn-sm btn-success"><i class="fa fa-eye"></i> Data Nilai Bobot </a>
+                            <a href="{{ route('kriteriam.create',[$devisis]) }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Data Kriteria </a>
                         </div>
                     </div>
                 </div>
@@ -97,12 +85,12 @@
                             </td>
 
                             <td style="text-align: center;">
-                                <form class="formDelete" action="{{route('kriteria.destroy',[$periodes, $devisis, $val->id])}}" method="post">
+                                <form class="formDelete" action="{{route('kriteriam.destroy',[ $devisis, $val->id])}}" method="post">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="_method" value="delete">
                                     <input type="hidden" name="id" value="{{ $val }}">
                                      <div class="form-group">
-                                        <a href="{{ route('nilai.index',[$periodes, $devisis, $val->id]) }}"  class="btn btn-sm btn-primary"><i class="fa fa-edit" title="Nilai"></i> Nilai</a>
+                                         <a href="{{ route('kriteriam.edit',[$devisis, $val->id]) }}"  class="btn btn-sm btn-warning"><i class="fa fa-edit" title="Ubah"></i> Ubah</a>
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus data?')" title="Hapus"><i class="icon-7 ri-delete-bin-line"></i>Hapus</button>
 
                                     </div>

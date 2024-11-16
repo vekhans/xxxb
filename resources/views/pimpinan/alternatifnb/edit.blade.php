@@ -50,17 +50,21 @@
                         <?php
                         foreach ($alternatifnb as $key => $value) : ?>
 
-                                    <label class="col-md-7 form-control" for="nama">
-                                        <p hidden="true"><?= $value->kriteria ?></p>
-                                        <?php
+<p hidden="true"><?= $value->kriteria ?></p>
+<?php
                                         foreach ($kriteriase as $cdfg => $cds) : ?>
                                             <?php if ($cds->id == $value->kriteria): ?>
+                                            <label class="col-md-5 form-control" for="nama">
                                                <strong>Kriteria</strong> {{$cds->kode}} - {{$cds->nama}}
-                                            <?php endif ?>
-                                        <?php endforeach; ?>
-                                    </label>
-                                    <input class="form-control col-md-5" type="number" min="0" max="1000" name="ID-{{$value->id}}" value="{{$value->bobot}}" />
 
+                                    </label>
+                                    <input class="form-control col-md-2" type="number" min="0" max="1000" name="ID-{{$value->id}}" value="{{$value->bobot}}" required />
+                                    <label class="col-md-4 form-control" for="dd">
+                                          {{$cds->satuan}}
+
+                             </label>
+                                    <?php endif ?>
+                                    <?php endforeach; ?>
 
                         <?php endforeach; ?>
                     </div>

@@ -3,20 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-use App\Models\User;
-use App\Models\Periode;
-use App\Models\Devisi;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
-class DevisiController extends Controller
+class MdevisiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($periodes)
+    public function index()
     {
         try
         {
@@ -24,21 +19,23 @@ class DevisiController extends Controller
             if(!Auth::User())
             {
                 // jika tidak ada maka akan dikembalikan ke halaman login
-                return redirect()->route('login')->with('warning','Data tidak valid!');
+                $status = "Data tidak valid!...";
+                return redirect()->route('login')->with('warning', $status);
             }
             // cek apakah id user = 1
             //artinya hanya user dengan id = 1 saja yang bisa mengakses data profil
-            if (Auth::User()->id==1){
+            if (Auth::User()->kategori=== "Admin"){
                 //jika berhasi (user id =1)
+                //maka akan membuat title dengan nama title = Data Profil'
                 $title = 'Data Devisi';
-                $periodes = Periode::findOrFail($periodes);
-                $data = Devisi::where('periode','=',$periodes->id)->orderBy('id', 'asc')->get();
-
-                // menampilkan halaman slide yang lokasinya ada di profil/resource/view/admin/berita/index.blade.php
-                return view('admin.devisi.index',['title' => $title, 'periodes'=>$periodes, 'data'=>$data]);
+                //mengambil semua data yang ada di dalam table user'
+                                 // menampilkan halaman user yang lokasinya ada di profil/resource/view/admin/profil/index.blade.php
+                return view('admin.mdevisi.index',['title' => $title]);
             }
+
             else{
-                return redirect()->route('login')->with('warning','Data tidak valid!');
+                $status = "Anda Bukan Super Admin!...";
+                return redirect()->route('login')->with('warning', $status);
             }
         }
         catch (ModelNotFoundException $ex)
@@ -53,17 +50,17 @@ class DevisiController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($periodes, $id=null)
+    public function create()
     {
-
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $req, $periodes, $id = null)
+    public function store(Request $request)
     {
-
+        //
     }
 
     /**
