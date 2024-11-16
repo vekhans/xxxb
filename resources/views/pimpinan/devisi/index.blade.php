@@ -1,12 +1,23 @@
 @extends('layouts.admin.phome')
 @section('content')
-
 <div id="content-wrapper">
     <div class="container-fluid">
         <h3>Data Divisi</h3>
         <br>
-        <strong>Periode :{{$periodes->tahun}}-{{ $periodes->nama}}</strong>
-        <hr/>
+        <table>
+            <tr>
+                <td>
+                    <strong>Periode </strong>
+                </td>
+                <td>
+                    <strong> : </strong>
+                </td>
+                <td>
+                    <strong> {{ $periodes->tahun }} - {{ $periodes->nama }} </strong>
+                </td>
+            </tr>
+        </table>
+        <br>
         @if(session('status'))
         <div class="alert alert-info alert-dismissible fade in" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -18,10 +29,10 @@
             <div class="card-header">
                 <div class="form-group">
                     <div class="form-row">
-                        <div class="col-md-9" style="text-align: left;"> 
+                        <div class="col-md-9" style="text-align: left;">
                             <a href="{{route('rasaadmin')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Dashboard</a>
                             <a href="{{route('periodes.index')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Periode</a>
-                            <a href="{{route('devisis.index',[$periodes])}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Data Periode</a> 
+                            <i class="fa fa-fw fa-tachometer-alt"></i> Data Divisi
                         </div>
                     </div>
                 </div>
@@ -29,105 +40,60 @@
             <div class="card-body table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead class="thead-dark text-center">
-                        <tr>                            
-                            <th>No.</th> 
-                            <th>Divisi</th> 
-                            <th>Perhitungan</th>  
+                        <tr>
+                            <th>No.</th>
+                            <th>Nama</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tfoot class="thead-dark text-center">
-                        <tr>                            
-                            <th>No.</th> 
-                            <th>Divisi</th> 
-                            <th>Perhitungan</th>  
+                        <tr>
+                            <th>No.</th>
+                            <th>Nama</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
                     </tfoot>
-                    <tbody> 
+                    <tbody>
+                        @forelse($data as $val)
                         <tr>
-                            <td style="text-align: center;">1</td>
-                             
+                            <td style="text-align: center;">{{$loop->iteration}}</td>
                             <td>
-                                Cuci
-                            </td> 
+                                {{ucfirst($val->nama)}}
+                            </td>
+
+                            <td>
+                                <p>Status :
+                <?php if ($val->status == "Tidak Konsisten"): ?>
+                  <span style="color: #CD3232; font-weight: 800;">Tidak Konsisten</span>
+                <?php else: ?>
+                  <span style="color: #1AAC06; font-weight: 800;">Konsisten</span>
+                <?php endif ?>
+              </p>
+                            </td>
+
                             <td style="text-align: center;">
                                 <form class="formDelete" action="" method="post">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="_method" value="delete">
-                                    <input type="hidden" name="id" value="cuci">
-                                    <div class="form-group">
-                                        <?php if (Auth::user()->kategori === 'Admin'): ?>
-                                            <?php 
-                                                $devisis="cuci";
-                                             ?>
-                                            <a class="btn btn-sm btn-primary" href="{{ route('kriteria.index',[$periodes, $devisis]) }}"><i class="fa fa-eye"></i>Kriteria</a>
-                                            
-                                        <?php endif ?>
-                                                                     
+                                    <input type="hidden" name="id" value="{{ $val }}">
+                                     <div class="form-group">
+                                        <a class="btn btn-sm btn-primary" href="{{ route('kriterianbp.index',[$periodes, $val->id]) }}"><i class="fa fa-eye"></i>Nilai Bobot Kriteria</a>
+
                                     </div>
                                 </form>
                             </td>
-                             
-  
-                            
                         </tr>
+                        @empty
                         <tr>
-                            <td style="text-align: center;">2</td>
-                             
-                            <td>
-                                Strika
-                            </td> 
-                            <td style="text-align: center;">
-                                <form class="formDelete" action="" method="post">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <input type="hidden" name="_method" value="delete">
-                                    <input type="hidden" name="id" value="strika">
-                                    <div class="form-group">
-                                        <?php if (Auth::user()->kategori === 'Admin'): ?>
-                                            <?php 
-                                            $devisis="strika";
-                                             ?>
-                                            <a class="btn btn-sm btn-primary" href="{{ route('kriteria.index',[$periodes, $devisis]) }}"><i class="fa fa-eye"></i>Kriteria</a>
-                                            
-                                        <?php endif ?>
-                                                                     
-                                    </div>
-                                </form>
-                            </td>
-                             
-  
-                            
+                            <td colspan="15" class="text-center">Tidak Ada Data</td>
                         </tr>
-                        <tr>
-                            <td style="text-align: center;">3</td>
-                             
-                            <td>
-                                Packing
-                            </td> 
-                            <td style="text-align: center;">
-                                <form class="formDelete" action="" method="post">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <input type="hidden" name="_method" value="delete">
-                                    <input type="hidden" name="id" value="packing">
-                                    <div class="form-group">
-                                        <?php if (Auth::user()->kategori === 'Admin'): ?>
-                                            <?php 
-                                            $devisis="packing";
-                                             ?>
-                                            <a class="btn btn-sm btn-primary" href="{{ route('kriteria.index',[$periodes, $devisis]) }}"><i class="fa fa-eye"></i>Kriteria</a>
-                                            
-                                        <?php endif ?>
-                                                                     
-                                    </div>
-                                </form>
-                            </td>
-                             
-  
-                            
-                        </tr> 
+                        @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-</div> 
+</div>
 @endsection

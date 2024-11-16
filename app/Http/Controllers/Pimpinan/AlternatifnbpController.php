@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Pimpinan;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Auth;
-use App\Models\User;
 use App\Models\Periode;
 use App\Models\Devisi;
 use App\Models\Nilai;
@@ -12,6 +10,8 @@ use App\Models\Kriteria;
 use App\Models\Kriterianb;
 use App\Models\Alternatif;
 use App\Models\Alternatifnb;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 class AlternatifnbpController extends Controller
@@ -62,50 +62,41 @@ class AlternatifnbpController extends Controller
                 foreach ($rowss as $row) {
                     $datass[$row->alternatif][$row->kriteria] = $row->nilai;
                 }
+                $devisisp = Devisi::where('nama','=', 'Packing')->where('periode','=',$periodes->id)->first();
+                $sdatap = Kriteria::all()->where('devisi','=',$devisisp->id);
+                $ddatap = Kriterianb::all()->where('devisi','=',$devisisp->id);
+                $tdatap = Alternatif::all()->where('periode','=',$periodes->id);
+                $edatap = Alternatifnb::all()->where('periode','=',$periodes->id);
+                $rowsp = DB::table('alternatifnbs as rk')->leftJoin('kriterias as k', 'k.id','=','rk.kriteria')->leftJoin('alternatifs as a', 'a.id','=','rk.alternatif')->where ('k.devisi','=', $devisisp->id)->SELECT ('k.nama as nama', 'rk.alternatif as alternatif', 'rk.kriteria as kriteria', 'rk.nilai as nilai' )->ORDERBY('rk.id', 'asc')->get();
+                $datasp = array();
+                foreach ($rowsp as $row) {
+                    $datasp[$row->alternatif][$row->kriteria] = $row->nilai;
+                }
 
+                // menampilkan halaman slide yang lokasinya ada di profil/resource/view/admin/berita/index.blade.php
+                return view('pimpinan.alternatifnb.index',['title' => $title,
+                    'datas' => $datas,
+                    'rows' => $rows,
+                    'sdata' => $sdata,
+                    'ddata' => $ddata,
+                    'tdata' => $tdata,
+                    'edata' => $edata,
 
-                     $devisisp = Devisi::where('nama','=', 'Packing')->where('periode','=',$periodes->id)->first();
+                    'datass' => $datass,
+                    'rowss' => $rowss,
+                    'sdatas' => $sdatas,
+                    'ddatas' => $ddatas,
+                    'tdatas' => $tdatas,
+                    'edatas' => $edatas,
 
-                    $sdatap = Kriteria::all()->where('devisi','=',$devisisp->id);
-                    $ddatap = Kriterianb::all()->where('devisi','=',$devisisp->id);
-                    $tdatap = Alternatif::all()->where('periode','=',$periodes->id);
-                    $edatap = Alternatifnb::all()->where('periode','=',$periodes->id);
-                    $rowsp = DB::table('alternatifnbs as rk')->leftJoin('kriterias as k', 'k.id','=','rk.kriteria')->leftJoin('alternatifs as a', 'a.id','=','rk.alternatif')->where ('k.devisi','=', $devisisp->id)->SELECT ('k.nama as nama', 'rk.alternatif as alternatif', 'rk.kriteria as kriteria', 'rk.nilai as nilai' )->ORDERBY('rk.id', 'asc')->get();
-                    $datasp = array();
-                    foreach ($rowsp as $row) {
-                        $datasp[$row->alternatif][$row->kriteria] = $row->nilai;
-                    }
+                    'datasp' => $datasp,
+                    'rowsp' => $rowsp,
+                    'sdatap' => $sdatap,
+                    'ddatap' => $ddatap,
+                    'tdatap' => $tdatap,
+                    'edatap' => $edatap,
 
-
-
-                    // menampilkan halaman slide yang lokasinya ada di profil/resource/view/admin/berita/index.blade.php
-                    return view('pimpinan.alternatifnb.index',['title' => $title,
-                        'datas' => $datas,
-                        'rows' => $rows,
-                        'sdata' => $sdata,
-                        'ddata' => $ddata,
-                        'tdata' => $tdata,
-                        'edata' => $edata,
-
-                        'datass' => $datass,
-                        'rowss' => $rowss,
-                        'sdatas' => $sdatas,
-                        'ddatas' => $ddatas,
-                        'tdatas' => $tdatas,
-                        'edatas' => $edatas,
-
-                        'datasp' => $datasp,
-                        'rowsp' => $rowsp,
-                        'sdatap' => $sdatap,
-                        'ddatap' => $ddatap,
-                        'tdatap' => $tdatap,
-                        'edatap' => $edatap,
-
-
-
-
-
-                        'periodes'=>$periodes]);
+                    'periodes'=>$periodes]);
                 }
 
             else{
@@ -168,7 +159,6 @@ class AlternatifnbpController extends Controller
                 // dd($kriteriase);
                 // die();
 
-
                 $params = [
                     'title' => 'Ubah Data Nilai Bobot Alternatif',
                     'periodes' => $periodes,
@@ -208,12 +198,9 @@ class AlternatifnbpController extends Controller
                 $ddl=[];
                 foreach ($request->except('_token', '_method') as $key => $value) {
                     $ID = str_replace('ID-', '', $key);
-
                     Alternatifnb::where('id', $ID)->where('periode', $periodes)->update(['bobot' => $value, 'status' => "Baru"]);
-
                     $dataalter = Alternatifnb::where('id', $ID)->where('periode', $periodes)->first();
                     $datanilai = Nilai::where('kriteria','=',$dataalter->kriteria)->get();
-
                     $dds= [];
                     $ddl=[];
                     foreach ($datanilai as  $ker => $danilai){

@@ -2,7 +2,7 @@
 @section('content')
 <div id="content-wrapper">
     <div class="container-fluid">
-        <h3>Data Divisi</h3>
+        <h3>Data Kriteria Bersasarkan Divisi</h3>
         <br>
 
         <br>
@@ -19,7 +19,7 @@
                     <div class="form-row">
                         <div class="col-md-9" style="text-align: left;">
                             <a href="{{route('rasaadmin')}}" class="active"><i class="fa fa-fw fa-tachometer-alt"></i> Dashboard</a>
-                            <i class="fa fa-fw fa-tachometer-alt"></i> Data Divisi
+                            <i class="fa fa-fw fa-tachometer-alt"></i> Data Divisi / Lihat Data Kriteria Berdasarkan Devisi
                         </div>
                     </div>
                 </div>
@@ -29,15 +29,15 @@
                     <thead class="thead-dark text-center">
                         <tr>
                             <th>No.</th>
-                            <th>Nama</th>
-                            <th>Aksi</th>
+                            <th>Nama Devisi</th>
+                            <th>Pilih Kriteria</th>
                         </tr>
                     </thead>
                     <tfoot class="thead-dark text-center">
                         <tr>
                             <th>No.</th>
-                            <th>Nama</th>
-                            <th>Aksi</th>
+                            <th>Nama Devisi</th>
+                            <th>Pilih Kriteria</th>
                         </tr>
                     </tfoot>
                     <tbody>

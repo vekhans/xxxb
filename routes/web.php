@@ -15,6 +15,8 @@ use App\Http\Controllers\Pimpinan\HitungpController;
 use App\Http\Controllers\Pimpinan\AdminpController;
 use App\Http\Controllers\Pimpinan\PeriodepController;
 use App\Http\Controllers\Pimpinan\DevisisController;
+use App\Http\Controllers\Pimpinan\KriteriapController;
+use App\Http\Controllers\Pimpinan\KriterianbpController;
 use App\Http\Controllers\Admin\NilaiController;
 use Illuminate\Support\Facades\Auth;
 
@@ -64,7 +66,9 @@ Route::group(['prefix' => 'pimpinan','namespace','middleware' => 'auth', 'rasapi
 	Route::resource('/admins', AdminpController::class);
 	Route::resource('periodes', PeriodepController::class);
 	Route::resource('periodes/{periodes}/devisis', DevisisController::class);
-	Route::get('periodes/{periodes}/perhitungans', [HitungpController::class, 'index'])->name('perhitungans.index');
+    Route::get('periodes/{periodes}/devisis/{devisis}/kriteriap/', [KriteriapController::class,'index'])->name('kriteriap.index');
+    Route::resource('periodes/{periodes}/devisis/{devisis}/kriterianbp', KriterianbpController::class);
+	Route::get('periodes/{periodes}/perhitungans/', [HitungpController::class, 'index'])->name('perhitungans.index');
 	Route::get('periodes/{periodes}/perhitungans/{perhitungan}/show', [HitungpController::class, 'show'])->name('perhitungans.show');
 	Route::get('periodes/{periodes}/perhitungans/rekapans', [HitungpController::class, 'rekapan'])->name('rekapans');
 });
