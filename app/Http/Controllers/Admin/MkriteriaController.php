@@ -134,7 +134,7 @@ class MkriteriaController extends Controller
                 DB::TABLE('mkriterias')->where('id','=',$kriteriastam->id)->UPDATE(['kode'=> $kode.$kriteriastam->id]);
                  $alternatifsew->save();
 
-                 $carinama2 = Mkriteria::where('nama','=',$req->nama)->count();
+                 $carinama2 = Mkriteria::where('devisi','=',$devisis)->where('nama','=',$req->nama)->count();
                     if ($carinama2 > 1) {
                         DB::TABLE('mkriterias')->where('id','=',$kriteriastam->id)->delete();
                     return redirect()->back()->with('warning','Data Nama Sudah Dipakai Pada Data Master Kriteria lain!');
@@ -217,17 +217,13 @@ class MkriteriaController extends Controller
                     $carinama = Mkriteria::where('devisi','=',$devisis)->where('nama','=',$request->nama)->count();
                     if ($carinama > 1) {
                         DB::TABLE('mkriterias')->where('id','=',$kriterubahs->id)->UPDATE(['nama'=> $nama]);
-                    return redirect()->back()->with('warning','Data Nama Sudah Dipakai Pada Kriteria lain pada periode ini!');
+                        return redirect()->back()->with('warning','Data Nama Sudah Dipakai Pada Kriteria lain pada periode ini!');
                     }
                     $krubah = Kriteria::where('mkriteria','=', $kriterubahs->id)->get();
 
                     foreach ($krubah as $kreyss => $vralaue) {
-
                         DB::TABLE('kriterias')->where('mkriteria','=',$vralaue->id)->UPDATE(['nama'=> $kriterubahs->nama, 'satuan'=>$kriterubahs->satuan,'atribut'=>$kriterubahs->atribut ]);
                     }
-
-
-
 
                 return redirect()->route('kriteriam.index',[$devisis])->with('success','Data Master Kriteria Berhasil di Ubah!');
              }
